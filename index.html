@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bagus Wicaksono Nurjayanto — Developer Portfolio</title>
+    <meta name="description" content="Software Engineer & Core Banking Developer portfolio showcasing projects in Java Spring Boot, Flutter, C/C++, Docker, & Homelab Infrastructure.">
+    
+    <!-- Google Fonts: JetBrains Mono & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css?v=5">
+</head>
+<body>
+
+    <!-- Main Container -->
+    <div class="portfolio-container">
+        
+        <!-- Header Controls Row (Right Aligned) -->
+        <header class="top-controls-bar">
+            <div class="controls-group">
+                <!-- Follow Button -->
+                <button class="btn-follow" id="btnFollow" onclick="toggleFollow()">
+                    <i class="fa-solid fa-plus" id="followIcon"></i>
+                    <span id="followText">Follow</span>
+                </button>
+                
+                <!-- GitHub Badge -->
+                <a href="https://github.com/wiicaakkk" target="_blank" class="icon-control-btn" title="GitHub Profile (wiicaakkk)">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                
+                <!-- Theme Switcher Button -->
+                <button class="icon-control-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Theme">
+                    <span id="themeIcon">☀️</span>
+                </button>
+                
+                <!-- Share Button -->
+                <button class="icon-control-btn" onclick="sharePortfolio()" title="Share Portfolio">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Layout: Grid 2 Columns -->
+        <main class="portfolio-grid">
+            
+            <!-- LEFT COLUMN: Profile & Bio Sidebar -->
+            <aside class="profile-sidebar">
+                <!-- Avatar -->
+                <div class="avatar-container">
+                    <img src="assets/avatar.png" alt="wiicaakkk avatar" class="avatar-img" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=wiicaakkk'">
+                </div>
+
+                <!-- User Info -->
+                <div class="profile-details">
+                    <h1 class="user-handle">Bagus Wicaksono Nurjayanto</h1>
+                    <h2 class="user-title">Software Engineer</h2>
+                    
+                    <div class="meta-info">
+                        <div class="meta-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>South Jakarta, Indonesia</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fa-regular fa-calendar"></i>
+                            <span>Joined August 2026</span>
+                        </div>
+                    </div>
+
+                    <!-- Bio -->
+                    <p class="user-bio">
+                        Menolak gabut
+                    </p>
+
+                    <!-- Tech Stack Badges -->
+                    <div class="tech-badges-list">
+                        <span class="tech-badge">Java Spring Boot</span>
+                        <span class="tech-badge">Flutter</span>
+                        <span class="tech-badge">C / C++</span>
+                        <span class="tech-badge">Oracle DB</span>
+                        <span class="tech-badge">Docker</span>
+                        <span class="tech-badge">Proxmox VE</span>
+                        <span class="tech-badge">PostgreSQL</span>
+                        <span class="tech-badge">Redis</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- RIGHT COLUMN: Tabbed Views (Projects & Work Experience) -->
+            <section class="main-content">
+                
+                <!-- Navigation Tabs Switcher -->
+                <nav class="content-tabs">
+                    <button class="tab-btn active" id="tabProjectsBtn" onclick="switchTab('projects')">
+                        <i class="fa-solid fa-code"></i>
+                        <span>Projects</span>
+                    </button>
+                    <button class="tab-btn" id="tabExperienceBtn" onclick="switchTab('experience')">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>Work Experience</span>
+                    </button>
+                    <button class="tab-btn" id="tabContactBtn" onclick="switchTab('contact')">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span>Contact</span>
+                    </button>
+                </nav>
+
+                <!-- TAB 1: PROJECTS VIEW -->
+                <div class="tab-view active" id="viewProjects">
+                    <div class="content-block">
+                        <h3 class="section-title">Projects</h3>
+                        
+                        <div class="projects-grid">
+                            
+                            <!-- Project Card 1: QRIS Location Tracker -->
+                            <div class="project-card" onclick="window.open('https://qris.wicak.cloud', '_blank')">
+                                <div class="project-header">
+                                    <div class="project-title-box">
+                                        <h4 class="project-name">qris-location-tracker</h4>
+                                    </div>
+                                    <div class="project-header-right">
+                                        <span class="status-badge badge-building">Building</span>
+                                    </div>
+                                </div>
+                                <p class="project-desc">
+                                    EMVCo QRIS Scanner &amp; GPS Location Mapping App with Java 21 Spring Boot Backend &amp; Flutter Native Mobile.
+                                </p>
+                            </div>
+
+                            <!-- Project Card 2: Core Banking Engine -->
+                            <div class="project-card" onclick="window.open('https://github.com/wiicaakkk/core-banking-engine', '_blank')">
+                                <div class="project-header">
+                                    <div class="project-title-box">
+                                        <h4 class="project-name">core-banking-engine</h4>
+                                    </div>
+                                    <div class="project-header-right">
+                                        <span class="status-badge badge-live">Live</span>
+                                        <span class="status-badge badge-free">Enterprise</span>
+                                    </div>
+                                </div>
+                                <p class="project-desc">
+                                    High-concurrency banking engine for QRIS MPM, Daily Interest Accrual, SWIFT Remittance &amp; GL Reconciliation.
+                                </p>
+                            </div>
+
+                            <!-- Project Card 3: Homelab Control Center -->
+                            <div class="project-card" onclick="window.open('https://github.com/wiicaakkk/homelab-control-center', '_blank')">
+                                <div class="project-header">
+                                    <div class="project-title-box">
+                                        <h4 class="project-name">homelab-control-center</h4>
+                                    </div>
+                                    <div class="project-header-right">
+                                        <span class="status-badge badge-live">Live</span>
+                                        <span class="status-badge badge-free">Free</span>
+                                    </div>
+                                </div>
+                                <p class="project-desc">
+                                    EVA-01 NERV style operations control center for Proxmox CT telemetry, Smart Plug power monitoring &amp; CCTV feeds.
+                                </p>
+                            </div>
+
+                            <!-- Project Card 4: TrobosLink Ads Bypass -->
+                            <div class="project-card" onclick="window.open('https://bypass.wicak.cloud', '_blank')">
+                                <div class="project-header">
+                                    <div class="project-title-box">
+                                        <h4 class="project-name">troboslink-ads-bypass</h4>
+                                    </div>
+                                    <div class="project-header-right">
+                                        <span class="status-badge badge-live">Live</span>
+                                        <span class="status-badge badge-free">Free</span>
+                                    </div>
+                                </div>
+                                <p class="project-desc">
+                                    High-speed shortlink resolver and ad-skipping engine built for homelab power users.
+                                </p>
+                            </div>
+
+                            <!-- Project Card 5: WhatsApp Homelab Bot -->
+                            <div class="project-card" onclick="window.open('https://github.com/wiicaakkk/whatsapp-homelab-bot', '_blank')">
+                                <div class="project-header">
+                                    <div class="project-title-box">
+                                        <h4 class="project-name">whatsapp-homelab-bot</h4>
+                                    </div>
+                                    <div class="project-header-right">
+                                        <span class="status-badge badge-live">Live</span>
+                                    </div>
+                                </div>
+                                <p class="project-desc">
+                                    Automated WhatsApp Bot for sticker generation, Proxmox server health alerts &amp; AI agent gateway.
+                                </p>
+                            </div>
+
+                            <!-- Project Card 6: OpenClaw AI Gateway -->
+                            <div class="project-card" onclick="window.open('https://github.com/wiicaakkk/openclaw-ai-gateway', '_blank')">
+                                <div class="project-header">
+                                    <div class="project-title-box">
+                                        <h4 class="project-name">openclaw-ai-gateway</h4>
+                                    </div>
+                                    <div class="project-header-right">
+                                        <span class="status-badge badge-live">Live</span>
+                                    </div>
+                                </div>
+                                <p class="project-desc">
+                                    Multi-model LLM agent gateway with Gemini 1.5 Flash, OpenRouter &amp; DeepSeek fallback routines.
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- GITHUB ACTIVITY HEATMAP SECTION -->
+                    <div class="content-block">
+                        <h3 class="section-title">GitHub</h3>
+                        
+                        <div class="github-heatmap-card">
+                            <div class="heatmap-scroll-wrapper">
+                                <!-- Heatmap Months Header -->
+                                <div class="heatmap-months">
+                                    <span>Sep</span>
+                                    <span>Oct</span>
+                                    <span>Nov</span>
+                                    <span>Dec</span>
+                                    <span>Jan</span>
+                                    <span>Feb</span>
+                                    <span>Mar</span>
+                                    <span>Apr</span>
+                                    <span>May</span>
+                                    <span>Jun</span>
+                                    <span>Jul</span>
+                                    <span>Aug</span>
+                                </div>
+
+                                <div class="heatmap-body">
+                                    <!-- Heatmap Days Labels -->
+                                    <div class="heatmap-days">
+                                        <span>Mon</span>
+                                        <span>Wed</span>
+                                        <span>Fri</span>
+                                    </div>
+
+                                    <!-- Heatmap Grid Cells (52 Weeks x 7 Days) -->
+                                    <div class="heatmap-grid" id="heatmapGrid">
+                                        <!-- Dynamically generated via script.js -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: WORK EXPERIENCE VIEW -->
+                <div class="tab-view" id="viewExperience">
+                    <div class="content-block">
+                        <h3 class="section-title">Work Experience</h3>
+                        
+                        <div class="experience-list">
+                            
+                            <!-- Experience 1: Next TI -->
+                            <div class="experience-card">
+                                <div class="exp-header">
+                                    <div>
+                                        <h4 class="exp-role">Programmer – Core Banking Developer &amp; Business Analyst</h4>
+                                        <div class="exp-company">Next TI, Jakarta</div>
+                                    </div>
+                                    <span class="exp-date">Apr 2024 – Present</span>
+                                </div>
+                                <ul class="exp-bullets">
+                                    <li>Developed QRIS MPM payment integration, ensuring accurate payment posting and reconciliation in compliance with Bank Indonesia standards.</li>
+                                    <li>Designed Daily Interest calculation for e-Saving products, translating product business requirements into automated backend logic.</li>
+                                    <li>Analyzed and implemented Payroll Transaction, ensuring data privacy compliance and accurate GL posting for payroll disbursement flows.</li>
+                                    <li>Led end-to-end development of Remittance module covering international transfer flows (SWIFT/TT), from requirement gathering through system testing and deployment.</li>
+                                    <li>Translated business rules into technical specifications for a Cashback Program, coordinating reward calculation logic and GL posting with cross-functional teams.</li>
+                                    <li>Performed Balance Sheet (Neraca) Adjustment and GL reconciliation enhancements to ensure accurate financial reporting in line with regulatory requirements.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Experience 2: Nutrifood x Telkom University -->
+                            <div class="experience-card">
+                                <div class="exp-header">
+                                    <div>
+                                        <h4 class="exp-role">Research Assistant</h4>
+                                        <div class="exp-company">Nutrifood x Telkom University, Bandung</div>
+                                    </div>
+                                    <span class="exp-date">Jul 2022 – Sep 2022</span>
+                                </div>
+                                <ul class="exp-bullets">
+                                    <li>Assisted in research projects as part of Nutrifood's Studi Independen program in collaboration with Telkom University.</li>
+                                    <li>Conducted literature reviews, data collection, and analysis to support academic and applied research.</li>
+                                    <li>Coordinated with mentors and team members to meet project deliverables and timelines.</li>
+                                    <li>Contributed to report drafting and presentation of research findings in structured formats.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Experience 3: Agate x Kampus Merdeka (Game Programmer) -->
+                            <div class="experience-card">
+                                <div class="exp-header">
+                                    <div>
+                                        <h4 class="exp-role">Game Programmer (Remote)</h4>
+                                        <div class="exp-company">Agate x Kampus Merdeka</div>
+                                    </div>
+                                    <span class="exp-date">Aug 2021 – Jan 2022</span>
+                                </div>
+                                <ul class="exp-bullets">
+                                    <li>Participated in Kampus Merdeka's Studi Independen program with a focus on game development.</li>
+                                    <li>Designed and implemented game logic and mechanics using industry-standard tools and languages.</li>
+                                    <li>Collaborated with artists and designers to integrate assets into game builds.</li>
+                                    <li>Tested, debugged, and optimized gameplay features to ensure smooth user experiences.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Experience 4: Agate x Kampus Merdeka (3D Designer) -->
+                            <div class="experience-card">
+                                <div class="exp-header">
+                                    <div>
+                                        <h4 class="exp-role">3D Designer (Remote)</h4>
+                                        <div class="exp-company">Agate x Kampus Merdeka</div>
+                                    </div>
+                                    <span class="exp-date">Aug 2021 – Jan 2022</span>
+                                </div>
+                                <ul class="exp-bullets">
+                                    <li>Specialized in 3D modeling and design within the framework of Kampus Merdeka's Studi Independen program.</li>
+                                    <li>Created and textured 3D assets for use in games and interactive media.</li>
+                                    <li>Utilized software such as Blender or Maya to model, rig, and render objects.</li>
+                                    <li>Worked alongside programmers and creative teams to ensure visual consistency and performance optimization.</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: CONTACT VIEW -->
+                <div class="tab-view" id="viewContact">
+                    <div class="content-block">
+                        <h3 class="section-title">Contact &amp; Connect</h3>
+                        
+                        <div class="contact-grid">
+                            <!-- LinkedIn -->
+                            <a href="https://linkedin.com/in/baguswicaksono" target="_blank" class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </div>
+                                <div class="contact-info">
+                                    <span class="contact-label">LinkedIn</span>
+                                    <span class="contact-value">Bagus Wicaksono</span>
+                                </div>
+                            </a>
+
+                            <!-- WhatsApp / Phone -->
+                            <a href="https://wa.me/6282223259114" target="_blank" class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </div>
+                                <div class="contact-info">
+                                    <span class="contact-label">WhatsApp / Phone</span>
+                                    <span class="contact-value">+62 822-2325-9114</span>
+                                </div>
+                            </a>
+
+                            <!-- Email -->
+                            <a href="mailto:bagus.wicak@outlook.com" class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </div>
+                                <div class="contact-info">
+                                    <span class="contact-label">Email</span>
+                                    <span class="contact-value">bagus.wicak@outlook.com</span>
+                                </div>
+                            </a>
+
+                            <!-- GitHub -->
+                            <a href="https://github.com/wiicaakkk" target="_blank" class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fa-brands fa-github"></i>
+                                </div>
+                                <div class="contact-info">
+                                    <span class="contact-label">GitHub</span>
+                                    <span class="contact-value">@wiicaakkk</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-popup" id="toastPopup">URL copied to clipboard!</div>
+
+    <!-- Custom Script -->
+    <script src="script.js?v=5"></script>
+</body>
+</html>
