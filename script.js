@@ -435,45 +435,12 @@ function showToast(message) {
     }, 2800);
 }
 
-// ================= GITHUB HEATMAP ONE CAT MATRIX (52 WEEKS x 7 DAYS) =================
-const CAT_HEATMAP_DATA = [
-    // Left Sparse Activity (Cols 0..14)
-    [0,0,0,0,0,0,0], [0,1,0,0,0,0,0], [0,0,0,0,1,0,0], [0,0,0,0,0,0,0], [0,0,1,0,0,0,0],
-    [0,0,0,0,0,0,0], [0,0,0,1,0,0,0], [0,0,0,0,0,0,0], [0,1,0,0,0,0,0], [0,0,0,0,0,1,0],
-    [0,0,0,0,0,0,0], [0,0,1,0,0,0,0], [0,0,0,0,0,0,0], [0,1,0,0,0,0,0], [0,0,0,0,0,0,0],
-
-    // 🐱 THE ONE CAT (Cols 15..36)
-    [0,0,0,0,0,0,4], // Col 15: Tail tip
-    [0,0,0,0,0,4,4], // Col 16: Tail curve
-    [0,0,0,0,3,4,0], // Col 17: Tail base
-    [0,0,0,4,4,4,4], // Col 18: Rear body & leg
-    [0,0,4,4,4,4,0], // Col 19: Rear leg
-    [0,4,4,4,4,4,4], // Col 20: Body
-    [0,4,4,4,4,4,4], // Col 21: Body
-    [0,4,4,4,4,4,0], // Col 22: Belly
-    [0,4,4,4,4,4,4], // Col 23: Front shoulder
-    [0,4,4,4,4,4,4], // Col 24: Front leg
-    [4,4,4,4,4,4,0], // Col 25: Neck & chest
-    [4,4,0,0,0,0,0], // Col 26: Left Whisker
-    [4,4,4,4,0,0,0], // Col 27: Ear L tip
-    [3,4,4,4,4,0,0], // Col 28: Ear L base
-    [2,4,4,4,4,4,0], // Col 29: Head L
-    [2,4,1,4,4,4,0], // Col 30: Eye L (level-1)
-    [3,4,4,2,4,4,4], // Col 31: Nose & Muzzle
-    [2,4,1,4,4,4,0], // Col 32: Eye R (level-1)
-    [2,4,4,4,4,4,0], // Col 33: Head R
-    [3,4,4,4,4,0,0], // Col 34: Ear R base
-    [4,4,4,4,0,0,0], // Col 35: Ear R tip
-    [4,4,0,0,0,0,0], // Col 36: Right Whisker
-
-    // Right Sparse Activity (Cols 37..51)
-    [0,0,0,0,0,0,0], [0,0,0,1,0,0,0], [0,0,0,0,0,0,0], [0,1,0,0,0,0,0], [0,0,0,0,1,0,0],
-    [0,0,0,0,0,0,0], [0,0,1,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,1,0], [0,1,0,0,0,0,0],
-    [0,0,0,0,0,0,0], [0,0,0,1,0,0,0], [0,0,0,0,0,0,0], [0,0,1,0,0,0,0], [0,0,0,0,0,0,0]
-];
-
+// ================= GITHUB HEATMAP PAC-MAN ANIMATION =================
+let pacPosition = -6;
+let pacMouthOpen = true;
+let eatenPellets = new Set();
+let pacAnimInterval = null;
 let heatmapCells = [];
-let catAnimInterval = null;
 
 function generateHeatmap() {
     const grid = document.getElementById('heatmapGrid');
@@ -490,39 +457,108 @@ function generateHeatmap() {
         heatmapCells.push(cell);
     }
 
-    renderCatHeatmap(false);
-    startCatBlinkAnimation();
+    startPacmanAnimation();
 }
 
-function renderCatHeatmap(isBlinking = false) {
-    for (let col = 0; col < 52; col++) {
-        const colData = CAT_HEATMAP_DATA[col] || [0,0,0,0,0,0,0];
+function startPacmanAnimation() {
+    if (pacAnimInterval) clearInterval(pacAnimInterval);
 
-        for (let row = 0; row < 7; row++) {
-            const cellIndex = col * 7 + row; // grid-auto-flow: column
-            const cell = heatmapCells[cellIndex];
-            if (!cell) continue;
+    pacPosition = -6;
+    eatenPellets.clear();
 
-            let level = colData[row];
+    pacAnimInterval = setInterval(() => {
+        pacPosition++;
+        pacMouthOpen = !pacMouthOpen;
 
-            // Subtle Eye Blink effect: level-1 (light green eye) turns to level-4 when blinking
-            if (isBlinking && level === 1) {
-                level = 4;
+        if (pacPosition > 58) {
+            pacPosition = -6;
+            eatenPellets.clear();
+        }
+
+        renderPacmanFrame();
+    }, 150); // Speed of Pac-Man movement (150ms per step)
+}
+
+function renderPacmanFrame() {
+    // 1. Initialize empty 52x7 frame
+    const frame = Array.from({ length: 52 }, () => [0, 0, 0, 0, 0, 0, 0]);
+
+    // 2. Add Pac-Dots / Pellets along middle row (row 3)
+    const dotCols = [3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47];
+    dotCols.forEach(col => {
+        // If Pac-Man has passed this dot, mark eaten
+        if (pacPosition >= col + 2) {
+            eatenPellets.add(col);
+        }
+        if (!eatenPellets.has(col)) {
+            frame[col][3] = 2; // Green dot
+        }
+    });
+
+    // 3. Pac-Man Open Mouth (5x5 matrix)
+    const pacOpen = [
+        [0, 4, 4, 4, 0],
+        [4, 4, 4, 0, 0],
+        [4, 4, 0, 0, 0], // Open mouth facing right
+        [4, 4, 4, 0, 0],
+        [0, 4, 4, 4, 0]
+    ];
+
+    // Pac-Man Closed Mouth (5x5 matrix)
+    const pacClosed = [
+        [0, 4, 4, 4, 0],
+        [4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4],
+        [4, 4, 4, 4, 4],
+        [0, 4, 4, 4, 0]
+    ];
+
+    const pacSprite = pacMouthOpen ? pacOpen : pacClosed;
+
+    // Draw Pac-Man onto frame
+    for (let c = 0; c < 5; c++) {
+        const targetCol = pacPosition + c;
+        if (targetCol >= 0 && targetCol < 52) {
+            for (let r = 0; r < 5; r++) {
+                const val = pacSprite[r][c];
+                if (val > 0) {
+                    frame[targetCol][r + 1] = val; // Centered at rows 1..5
+                }
             }
-
-            cell.className = 'heatmap-cell level-' + level;
         }
     }
-}
 
-function startCatBlinkAnimation() {
-    if (catAnimInterval) clearInterval(catAnimInterval);
+    // 4. Draw Ghost (Blinky) Sprite (5x5 matrix, trailing by 10 columns)
+    const ghostX = pacPosition - 10;
+    const ghostSprite = [
+        [0, 3, 3, 3, 0],
+        [3, 1, 3, 1, 3], // Eyes (level-1)
+        [3, 3, 3, 3, 3],
+        [3, 3, 3, 3, 3],
+        [3, 0, 3, 0, 3]  // Tentacles
+    ];
 
-    catAnimInterval = setInterval(() => {
-        // Blink eyes closed/open
-        renderCatHeatmap(true);
-        setTimeout(() => {
-            renderCatHeatmap(false);
-        }, 180);
-    }, 3200); // Blinks every 3.2 seconds
+    for (let c = 0; c < 5; c++) {
+        const targetCol = ghostX + c;
+        if (targetCol >= 0 && targetCol < 52) {
+            for (let r = 0; r < 5; r++) {
+                const val = ghostSprite[r][c];
+                if (val > 0) {
+                    frame[targetCol][r + 1] = val; // Centered at rows 1..5
+                }
+            }
+        }
+    }
+
+    // 5. Update HTML Grid Cells
+    for (let col = 0; col < 52; col++) {
+        for (let row = 0; row < 7; row++) {
+            const cellIndex = col * 7 + row;
+            const cell = heatmapCells[cellIndex];
+            if (cell) {
+                const level = frame[col][row];
+                cell.className = 'heatmap-cell level-' + level;
+            }
+        }
+    }
 }
