@@ -133,6 +133,10 @@
                                     </div>
                                     <div class="project-header-right">
                                         <span class="status-badge badge-building">Building</span>
+                                        <button class="btn-arch-trigger" onclick="openArchModal(event, 'qris-location-tracker')" title="View System Architecture">
+                                            <i class="fa-solid fa-sitemap"></i>
+                                            <span>Arch</span>
+                                        </button>
                                     </div>
                                 </div>
                                 <p class="project-desc">
@@ -149,6 +153,10 @@
                                     <div class="project-header-right">
                                         <span class="status-badge badge-live">Live</span>
                                         <span class="status-badge badge-free">Enterprise</span>
+                                        <button class="btn-arch-trigger" onclick="openArchModal(event, 'core-banking-engine')" title="View System Architecture">
+                                            <i class="fa-solid fa-sitemap"></i>
+                                            <span>Arch</span>
+                                        </button>
                                     </div>
                                 </div>
                                 <p class="project-desc">
@@ -165,6 +173,10 @@
                                     <div class="project-header-right">
                                         <span class="status-badge badge-live">Live</span>
                                         <span class="status-badge badge-free">Free</span>
+                                        <button class="btn-arch-trigger" onclick="openArchModal(event, 'homelab-control-center')" title="View System Architecture">
+                                            <i class="fa-solid fa-sitemap"></i>
+                                            <span>Arch</span>
+                                        </button>
                                     </div>
                                 </div>
                                 <p class="project-desc">
@@ -181,6 +193,10 @@
                                     <div class="project-header-right">
                                         <span class="status-badge badge-live">Live</span>
                                         <span class="status-badge badge-free">Free</span>
+                                        <button class="btn-arch-trigger" onclick="openArchModal(event, 'troboslink-ads-bypass')" title="View System Architecture">
+                                            <i class="fa-solid fa-sitemap"></i>
+                                            <span>Arch</span>
+                                        </button>
                                     </div>
                                 </div>
                                 <p class="project-desc">
@@ -196,6 +212,10 @@
                                     </div>
                                     <div class="project-header-right">
                                         <span class="status-badge badge-live">Live</span>
+                                        <button class="btn-arch-trigger" onclick="openArchModal(event, 'whatsapp-homelab-bot')" title="View System Architecture">
+                                            <i class="fa-solid fa-sitemap"></i>
+                                            <span>Arch</span>
+                                        </button>
                                     </div>
                                 </div>
                                 <p class="project-desc">
@@ -211,6 +231,10 @@
                                     </div>
                                     <div class="project-header-right">
                                         <span class="status-badge badge-live">Live</span>
+                                        <button class="btn-arch-trigger" onclick="openArchModal(event, 'openclaw-ai-gateway')" title="View System Architecture">
+                                            <i class="fa-solid fa-sitemap"></i>
+                                            <span>Arch</span>
+                                        </button>
                                     </div>
                                 </div>
                                 <p class="project-desc">
@@ -397,6 +421,41 @@
 
             </section>
         </main>
+    </div>
+
+    <!-- System Architecture Modal Overlay -->
+    <div class="arch-modal-overlay" id="archModalOverlay" onclick="closeArchModal(event)">
+        <div class="arch-modal-card" onclick="event.stopPropagation()">
+            <div class="arch-modal-header">
+                <div class="arch-modal-title-group">
+                    <span class="arch-modal-badge" id="archModalCategory">Enterprise Financial Systems</span>
+                    <h2 class="arch-modal-title" id="archModalTitle">Core Banking Distributed Engine</h2>
+                    <span class="arch-modal-status" id="archModalStatus">Production Grade • High Concurrency</span>
+                </div>
+                <button class="arch-modal-close" onclick="closeArchModal()" title="Close (Esc)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="arch-modal-body">
+                <!-- Metrics Bar -->
+                <div class="arch-metrics-grid" id="archMetricsGrid"></div>
+
+                <!-- Section Header -->
+                <div class="arch-section-header">
+                    <i class="fa-solid fa-sitemap"></i>
+                    <span>System Architecture &amp; Data Pipeline</span>
+                </div>
+
+                <!-- Pipeline Container -->
+                <div class="arch-pipeline-container" id="archPipelineContainer"></div>
+            </div>
+
+            <div class="arch-modal-footer">
+                <span class="arch-footer-hint">💡 System designed for high resilience &amp; enterprise scale.</span>
+                <button class="btn-modal-done" onclick="closeArchModal()">Close Diagram</button>
+            </div>
+        </div>
     </div>
 
     <!-- Toast Notification -->
