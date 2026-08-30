@@ -5,6 +5,10 @@
 # Schedule: Every 6 hours (00:00, 06:00, 12:00, 18:00) via Cron / Systemd
 # ==============================================================================
 
+# Set to true if you want the ENTIRE PC / Server OS to reboot (sudo reboot)
+# Set to false if you only want to restart Services/Docker & clear RAM cache
+FULL_PC_REBOOT=false
+
 LOG_DIR="/home/michella/Media/Home Lab/logs"
 LOG_FILE="${LOG_DIR}/auto_restart.log"
 CRON_SCHEDULE="0 */6 * * *"
@@ -17,6 +21,20 @@ log_message() {
     TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S %Z')
     echo "[${TIMESTAMP}] $1" | tee -a "$LOG_FILE"
 }
+
+# Enable Full PC Reboot Option
+if [ "$1" == "--enable-full-reboot" ]; then
+    sed -i 's/FULL_PC_REBOOT=false/FULL_PC_REBOOT=true/' "$SCRIPT_PATH"
+    log_message "🔴 FULL PC REBOOT MODE ENABLED! Server OS will perform full system reboot every 6 hours."
+    exit 0
+fi
+
+# Disable Full PC Reboot Option
+if [ "$1" == "--disable-full-reboot" ]; then
+    sed -i 's/FULL_PC_REBOOT=true/FULL_PC_REBOOT=false/' "$SCRIPT_PATH"
+    log_message "🟢 Service & Cache-only Restart Mode Enabled (No PC Reboot)."
+    exit 0
+fi
 
 # Install Cron Job Option
 if [ "$1" == "--install-cron" ]; then
@@ -79,5 +97,17 @@ fi
 MEM_AFTER=$(free -h | awk '/Mem:/ {print $3 "/" $2}')
 log_message "📊 System Health After Maintenance:"
 log_message "   • Memory Used: ${MEM_AFTER}"
-log_message "🎉 AUTOMATIC 6-HOUR RESTART MAINTENANCE COMPLETED SUCCESSFULLY!"
-log_message "------------------------------------------------------------"
+
+# 6. Optional Full PC Hardware Reboot
+if [ "$FULL_PC_REBOOT" = true ]; then
+    log_message "🔴 INITIATING FULL HARDWARE PC / SERVER REBOOT NOW..."
+    log_message "------------------------------------------------------------"
+    if [ "$(id -u)" -eq 0 ]; then
+        /sbin/reboot
+    else
+        sudo /sbin/reboot || sudo shutdown -r now
+    fi
+else
+    log_message "🎉 AUTOMATIC 6-HOUR RESTART MAINTENANCE COMPLETED SUCCESSFULLY!"
+    log_message "------------------------------------------------------------"
+fi
