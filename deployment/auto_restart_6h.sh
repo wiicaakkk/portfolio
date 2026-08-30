@@ -7,7 +7,7 @@
 
 # Set to true if you want the ENTIRE PC / Server OS to reboot (sudo reboot)
 # Set to false if you only want to restart Services/Docker & clear RAM cache
-FULL_PC_REBOOT=false
+FULL_PC_REBOOT=true
 
 LOG_DIR="/home/michella/Media/Home Lab/logs"
 LOG_FILE="${LOG_DIR}/auto_restart.log"
@@ -24,14 +24,14 @@ log_message() {
 
 # Enable Full PC Reboot Option
 if [ "$1" == "--enable-full-reboot" ]; then
-    sed -i 's/FULL_PC_REBOOT=false/FULL_PC_REBOOT=true/' "$SCRIPT_PATH"
+    sed -i 's/FULL_PC_REBOOT=true/FULL_PC_REBOOT=true/' "$SCRIPT_PATH"
     log_message "🔴 FULL PC REBOOT MODE ENABLED! Server OS will perform full system reboot every 6 hours."
     exit 0
 fi
 
 # Disable Full PC Reboot Option
 if [ "$1" == "--disable-full-reboot" ]; then
-    sed -i 's/FULL_PC_REBOOT=true/FULL_PC_REBOOT=false/' "$SCRIPT_PATH"
+    sed -i 's/FULL_PC_REBOOT=true/FULL_PC_REBOOT=true/' "$SCRIPT_PATH"
     log_message "🟢 Service & Cache-only Restart Mode Enabled (No PC Reboot)."
     exit 0
 fi
@@ -103,9 +103,9 @@ if [ "$FULL_PC_REBOOT" = true ]; then
     log_message "🔴 INITIATING FULL HARDWARE PC / SERVER REBOOT NOW..."
     log_message "------------------------------------------------------------"
     if [ "$(id -u)" -eq 0 ]; then
-        /sbin/reboot
+        /sbin/reboot || systemctl reboot
     else
-        sudo /sbin/reboot || sudo shutdown -r now
+        systemctl reboot -i 2>/dev/null || sudo /sbin/reboot 2>/dev/null || sudo shutdown -r now 2>/dev/null || /sbin/reboot
     fi
 else
     log_message "🎉 AUTOMATIC 6-HOUR RESTART MAINTENANCE COMPLETED SUCCESSFULLY!"
