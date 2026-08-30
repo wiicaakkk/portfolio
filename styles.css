@@ -123,6 +123,55 @@ body {
     color: var(--text-secondary);
 }
 
+/* Download CV Buttons */
+.btn-download-cv {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    white-space: nowrap;
+}
+
+.btn-download-cv:hover {
+    background-color: var(--btn-primary-hover);
+    transform: translateY(-1px);
+}
+
+.btn-cv-sidebar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 14px;
+    padding: 9px 16px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+    box-sizing: border-box;
+}
+
+.btn-cv-sidebar:hover {
+    border-color: var(--text-primary);
+    background-color: var(--badge-tech-bg);
+    transform: translateY(-1px);
+}
+
 /* GitHub Badge */
 .github-badge {
     display: inline-flex;
