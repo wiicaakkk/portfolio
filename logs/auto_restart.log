@@ -1,0 +1,15 @@
+[2026-08-30 14:03:00 WIB] Installing 6-hour auto restart job to user crontab...
+[2026-08-30 14:03:00 WIB] ✅ Cron job successfully installed! Scheduled to run every 6 hours (0 */6 * * *).
+[2026-08-30 14:03:05 WIB] ------------------------------------------------------------
+[2026-08-30 14:03:05 WIB] 🔄 STARTING AUTOMATIC 6-HOUR SERVER MAINTENANCE & RESTART
+[2026-08-30 14:03:05 WIB] ------------------------------------------------------------
+[2026-08-30 14:03:05 WIB] 📊 System Health Before Maintenance:
+[2026-08-30 14:03:05 WIB]    • Memory Used: 6.5Gi/12Gi
+[2026-08-30 14:03:05 WIB]    • CPU Load Average: 3.53, 1.79, 0.69
+[2026-08-30 14:03:05 WIB] 🧹 Clearing RAM PageCache & Swap Buffers...
+[2026-08-30 14:03:05 WIB] ℹ️ No running Docker containers found to restart.
+[2026-08-30 14:03:05 WIB] 📊 System Health After Maintenance:
+[2026-08-30 14:03:05 WIB]    • Memory Used: 6.5Gi/12Gi
+[2026-08-30 14:03:05 WIB] 🎉 AUTOMATIC 6-HOUR RESTART MAINTENANCE COMPLETED SUCCESSFULLY!
+[2026-08-30 14:03:05 WIB] ------------------------------------------------------------
+[2026-08-30 14:05:43 WIB] 🔴 FULL PC REBOOT MODE ENABLED! Server OS will perform full system reboot every 6 hours.
