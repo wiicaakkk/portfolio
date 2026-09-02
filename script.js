@@ -552,3 +552,30 @@ function renderPacmanFrame() {
         }
     }
 }
+
+/* ================= CV VIEWER MODAL MANAGEMENT ================= */
+function openCvModal(e) {
+    if (e) e.preventDefault();
+    const modal = document.getElementById('cvModalOverlay');
+    if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeCvModal(e) {
+    if (e && e.target !== e.currentTarget && !e.target.closest('.cv-modal-close')) return;
+    const modal = document.getElementById('cvModalOverlay');
+    if (modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+}
+
+// Global Escape Key Listener for Modals
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeCvModal();
+        closeArchModal();
+    }
+});

@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="styles.css?v=13">
+    <link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body>
 
@@ -46,11 +46,11 @@
         <!-- Header Controls Row (Right Aligned) -->
         <header class="top-controls-bar">
             <div class="controls-group">
-                <!-- Download CV Button -->
-                <a href="assets/Bagus_Wicaksono_Nurjayanto_CV.pdf" target="_blank" download="Bagus_Wicaksono_Nurjayanto_CV.pdf" class="btn-download-cv" style="text-decoration: none; color: var(--btn-primary-text); background-color: var(--btn-primary-bg);" title="Download ATS Resume / CV (PDF)">
-                    <i class="fa-solid fa-file-arrow-down"></i>
-                    <span>Download CV</span>
-                </a>
+                <!-- View / Download CV Button -->
+                <button class="btn-download-cv" id="btnViewCv" onclick="openCvModal(event)" title="View Curriculum Vitae (PDF)">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>View CV</span>
+                </button>
 
                 <!-- Follow Button -->
                 <button class="btn-follow" id="btnFollow" onclick="toggleFollow()">
@@ -497,10 +497,39 @@
         </div>
     </div>
 
+    <!-- CV Viewer Modal Overlay -->
+    <div class="cv-modal-overlay" id="cvModalOverlay" onclick="closeCvModal(event)">
+        <div class="cv-modal-card" onclick="event.stopPropagation()">
+            <div class="cv-modal-header">
+                <div class="cv-modal-title-group">
+                    <span class="cv-modal-badge">ATS Resume / Curriculum Vitae</span>
+                    <h2 class="cv-modal-title">Bagus Wicaksono Nurjayanto</h2>
+                    <span class="cv-modal-status">Software Engineer &amp; Core Banking Specialist</span>
+                </div>
+                <div class="cv-modal-actions">
+                    <a href="assets/Bagus_Wicaksono_Nurjayanto_CV.pdf" download="Bagus_Wicaksono_Nurjayanto_CV.pdf" class="btn-cv-action" title="Download PDF File">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download</span>
+                    </a>
+                    <a href="assets/Bagus_Wicaksono_Nurjayanto_CV.pdf" target="_blank" class="btn-cv-action" title="Open in New Tab">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                    <button class="cv-modal-close" onclick="closeCvModal()" title="Close (Esc)">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="cv-modal-body">
+                <iframe src="assets/Bagus_Wicaksono_Nurjayanto_CV.pdf#toolbar=1&navpanes=0" class="cv-iframe" id="cvIframe" title="Curriculum Vitae Preview"></iframe>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div class="toast-popup" id="toastPopup">URL copied to clipboard!</div>
 
     <!-- Custom Script -->
-    <script src="script.js?v=13"></script>
+    <script src="script.js?v=14"></script>
 </body>
 </html>
