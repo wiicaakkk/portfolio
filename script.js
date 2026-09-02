@@ -287,19 +287,21 @@ function closeArchModal(event) {
     document.body.style.overflow = '';
 }
 
-// Tab Switcher Logic (Projects vs Work Experience vs Contact)
+// Tab Switcher Logic (Projects vs Work Experience vs Education vs Contact)
 function switchTab(tabName) {
     const projectsBtn = document.getElementById('tabProjectsBtn');
     const expBtn = document.getElementById('tabExperienceBtn');
+    const eduBtn = document.getElementById('tabEducationBtn');
     const contactBtn = document.getElementById('tabContactBtn');
 
     const viewProjects = document.getElementById('viewProjects');
     const viewExp = document.getElementById('viewExperience');
+    const viewEdu = document.getElementById('viewEducation');
     const viewContact = document.getElementById('viewContact');
 
     // Reset all tabs & views
-    [projectsBtn, expBtn, contactBtn].forEach(btn => btn && btn.classList.remove('active'));
-    [viewProjects, viewExp, viewContact].forEach(view => view && view.classList.remove('active'));
+    [projectsBtn, expBtn, eduBtn, contactBtn].forEach(btn => btn && btn.classList.remove('active'));
+    [viewProjects, viewExp, viewEdu, viewContact].forEach(view => view && view.classList.remove('active'));
 
     if (tabName === 'projects') {
         if (projectsBtn) projectsBtn.classList.add('active');
@@ -307,6 +309,9 @@ function switchTab(tabName) {
     } else if (tabName === 'experience') {
         if (expBtn) expBtn.classList.add('active');
         if (viewExp) viewExp.classList.add('active');
+    } else if (tabName === 'education') {
+        if (eduBtn) eduBtn.classList.add('active');
+        if (viewEdu) viewEdu.classList.add('active');
     } else if (tabName === 'contact') {
         if (contactBtn) contactBtn.classList.add('active');
         if (viewContact) viewContact.classList.add('active');
