@@ -820,14 +820,24 @@ body {
     .content-tabs {
         width: 100%;
         display: flex;
-        gap: 8px;
+        gap: 6px;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+    }
+
+    .content-tabs::-webkit-scrollbar {
+        display: none;
     }
 
     .tab-btn {
-        flex: 1;
+        flex: 1 0 auto;
         justify-content: center;
-        padding: 9px 12px;
-        font-size: 0.82rem;
+        padding: 8px 10px;
+        font-size: 0.78rem;
+        min-width: max-content;
     }
 
     .projects-grid {
@@ -1189,36 +1199,25 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 22px;
+    padding: 14px 20px;
     border-bottom: 1px solid var(--card-border);
     background-color: var(--bg-color);
 }
 
 .cv-modal-title-group {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.cv-modal-badge {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    align-items: center;
+    gap: 8px;
 }
 
 .cv-modal-title {
     font-family: var(--font-mono);
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--text-primary);
-}
-
-.cv-modal-status {
-    font-family: var(--font-mono);
-    font-size: 0.76rem;
-    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .cv-modal-actions {
