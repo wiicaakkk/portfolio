@@ -7,9 +7,10 @@ import time
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 
-CONFIG_FILE = "config.json"
-APPLIED_JOBS_FILE = "applied_jobs.json"
-USER_DATA_DIR = "./browser_user_data"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_FILE = os.path.join(SCRIPT_DIR, "config.json")
+APPLIED_JOBS_FILE = os.path.join(SCRIPT_DIR, "applied_jobs.json")
+USER_DATA_DIR = os.path.join(SCRIPT_DIR, "browser_user_data")
 
 def parse_args():
     parser = argparse.ArgumentParser(description="OpenClaw LinkedIn Easy Apply Agent")
@@ -85,22 +86,31 @@ def main():
         page.goto("https://www.linkedin.com/feed/", wait_until="domcontentloaded")
         time.sleep(3)
 
-        if "login" in page.url or "checkpoint" in page.url or page.locator("input#username").is_visible():
+        if "login" in page.url or "checkpoint" in page.url or page.locator("input#username, input[name='session_key']").count() > 0:
             print("⚠️ Session not active. Attempting automated login...")
             username = user_cfg.get("linkedin_username") or user_cfg.get("email")
             password = user_cfg.get("linkedin_password")
 
             if username and password:
                 try:
-                    if not page.locator("input#username").is_visible():
-                        page.goto("https://www.linkedin.com/login", wait_until="domcontentloaded")
-                        time.sleep(2)
+                    page.goto("https://www.linkedin.com/login", wait_until="domcontentloaded")
+                    time.sleep(3)
 
-                    page.locator("input#username").fill(username)
-                    page.locator("input#password").fill(password)
-                    page.locator("button[type='submit']").click()
-                    time.sleep(5)
-                    print("✅ Auto-login submitted. Continuing...")
+                    user_field = page.locator("input#username, input[name='session_key'], input#email-or-phone").first
+                    pass_field = page.locator("input#password, input[name='session_password']").first
+                    submit_btn = page.locator("button[type='submit'], button.btn__primary--large").first
+
+                    if user_field.count() > 0 and user_field.is_visible():
+                        user_field.fill(username)
+                        time.sleep(1)
+                    if pass_field.count() > 0 and pass_field.is_visible():
+                        pass_field.fill(password)
+                        time.sleep(1)
+                    if submit_btn.count() > 0 and submit_btn.is_visible():
+                        submit_btn.click()
+                        time.sleep(6)
+
+                    print("✅ Auto-login submitted. Session updated!")
                 except Exception as login_err:
                     print(f"⚠️ Auto-login attempt encountered issue: {login_err}")
             else:
@@ -120,7 +130,7 @@ def main():
             time.sleep(4)
 
             # Locate Job Cards
-            job_cards = page.locator(".job-card-container, .jobs-search-results__list-item").all()
+            job_cards = page.query_selector_all(".job-card-container, .jobs-search-results__list-item, div.job-card-list__entity-lockup, ul.jobs-search-results__list > li")
             print(f"📋 Found {len(job_cards)} Easy Apply job listings on page 1.")
 
             already_applied_ids = [j.get("job_id") for j in load_applied_jobs()]
