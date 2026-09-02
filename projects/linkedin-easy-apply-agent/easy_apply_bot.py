@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import json
 import os
 import sys
@@ -9,6 +10,14 @@ from playwright.sync_api import sync_playwright
 CONFIG_FILE = "config.json"
 APPLIED_JOBS_FILE = "applied_jobs.json"
 USER_DATA_DIR = "./browser_user_data"
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="OpenClaw LinkedIn Easy Apply Agent")
+    parser.add_argument("--keyword", type=str, help="Search keyword (e.g. 'Java Spring Boot')")
+    parser.add_argument("--location", type=str, help="Search location (e.g. 'Indonesia')")
+    parser.add_argument("--max", type=int, help="Max applications per run")
+    parser.add_argument("--headless", action="store_true", help="Run browser in headless mode")
+    return parser.parse_args()
 
 def load_config():
     if not os.path.exists(CONFIG_FILE):
@@ -30,14 +39,16 @@ def save_applied_job(job_info):
         json.dump(applied, f, indent=2, ensure_ascii=False)
 
 def main():
+    args = parse_args()
     config = load_config()
     search_cfg = config.get("search_settings", {})
     user_cfg = config.get("user_profile", {})
     answers = user_cfg.get("answers", {})
 
-    keywords_list = search_cfg.get("keywords", ["Java Spring Boot"])
-    location = search_cfg.get("location", "Indonesia")
-    max_applications = search_cfg.get("max_applications_per_run", 5)
+    keywords_list = [args.keyword] if args.keyword else search_cfg.get("keywords", ["Java Spring Boot"])
+    location = args.location if args.location else search_cfg.get("location", "Indonesia")
+    max_applications = args.max if args.max else search_cfg.get("max_applications_per_run", 5)
+    is_headless = args.headless
 
     print("==================================================")
     print("🚀 LinkedIn Easy Apply Automation Agent (OpenClaw)")
@@ -51,7 +62,7 @@ def main():
         # Launch persistent browser context to retain login session
         browser_context = p.chromium.launch_persistent_context(
             user_data_dir=USER_DATA_DIR,
-            headless=False, # Set to False so user can watch & authenticate if needed
+            headless=is_headless, # Controlled by CLI argument --headless or default False
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--start-maximized"
