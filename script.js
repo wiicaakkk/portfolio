@@ -370,6 +370,10 @@ function toggleFollow() {
         btn.classList.add('following');
         icon.className = 'fa-solid fa-check';
         text.innerText = 'Following';
+        showToast('Opening @wiicaakkk GitHub profile to follow...');
+        setTimeout(() => {
+            window.open('https://github.com/wiicaakkk', '_blank');
+        }, 400);
     } else {
         btn.classList.remove('following');
         icon.className = 'fa-solid fa-plus';
