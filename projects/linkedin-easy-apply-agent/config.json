@@ -1,0 +1,25 @@
+{
+  "search_settings": {
+    "keywords": ["Java Spring Boot", "Backend Engineer", "Software Engineer"],
+    "location": "Indonesia",
+    "easy_apply_only": true,
+    "max_applications_per_run": 10
+  },
+  "user_profile": {
+    "full_name": "Bagus Wicaksono Nurjayanto",
+    "phone": "+6282223259114",
+    "email": "bagus.wicak@outlook.com",
+    "portfolio": "https://wicak.cloud/",
+    "github": "https://github.com/wiicaakkk",
+    "cv_file_path": "/home/michella/Media/Home Lab/assets/Bagus_Wicaksono_Nurjayanto_CV.pdf",
+    "answers": {
+      "java": "2",
+      "spring": "2",
+      "backend": "2",
+      "sql": "2",
+      "database": "2",
+      "notice_period": "1 month",
+      "salary": "10000000"
+    }
+  }
+}
