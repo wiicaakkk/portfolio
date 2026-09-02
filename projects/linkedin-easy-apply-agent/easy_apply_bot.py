@@ -60,28 +60,51 @@ def main():
 
     with sync_playwright() as p:
         # Launch persistent browser context to retain login session
-        browser_context = p.chromium.launch_persistent_context(
-            user_data_dir=USER_DATA_DIR,
-            headless=is_headless, # Controlled by CLI argument --headless or default False
-            args=[
+        executable_bin = "/usr/bin/chromium" if os.path.exists("/usr/bin/chromium") else None
+        launch_kwargs = {
+            "user_data_dir": USER_DATA_DIR,
+            "headless": is_headless,
+            "args": [
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
                 "--disable-blink-features=AutomationControlled",
                 "--start-maximized"
             ],
-            viewport=None
-        )
+            "viewport": None
+        }
+        if executable_bin:
+            launch_kwargs["executable_path"] = executable_bin
+
+        browser_context = p.chromium.launch_persistent_context(**launch_kwargs)
 
         page = browser_context.pages[0] if browser_context.pages else browser_context.new_page()
 
-        # Step 1: Check Login State
+        # Step 1: Check Login State & Auto-Login
         print("🔍 Checking LinkedIn Session Status...")
         page.goto("https://www.linkedin.com/feed/", wait_until="domcontentloaded")
         time.sleep(3)
 
         if "login" in page.url or "checkpoint" in page.url or page.locator("input#username").is_visible():
-            print("\n⚠️ LinkedIn Session Not Detected!")
-            print("👉 Please log in to your LinkedIn account in the opened browser window.")
-            print("👉 Once logged in and viewing your LinkedIn Feed, press [ENTER] in this terminal to continue...\n")
-            input("Press [ENTER] after logging into LinkedIn: ")
+            print("⚠️ Session not active. Attempting automated login...")
+            username = user_cfg.get("linkedin_username") or user_cfg.get("email")
+            password = user_cfg.get("linkedin_password")
+
+            if username and password:
+                try:
+                    if not page.locator("input#username").is_visible():
+                        page.goto("https://www.linkedin.com/login", wait_until="domcontentloaded")
+                        time.sleep(2)
+
+                    page.locator("input#username").fill(username)
+                    page.locator("input#password").fill(password)
+                    page.locator("button[type='submit']").click()
+                    time.sleep(5)
+                    print("✅ Auto-login submitted. Continuing...")
+                except Exception as login_err:
+                    print(f"⚠️ Auto-login attempt encountered issue: {login_err}")
+            else:
+                print("⚠️ No credentials specified in config.json. Continuing search...")
         else:
             print("✅ Logged in successfully to LinkedIn!\n")
 
