@@ -820,24 +820,23 @@ body {
     .content-tabs {
         width: 100%;
         display: flex;
-        gap: 6px;
-        overflow-x: auto;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
+        gap: 4px;
         padding-bottom: 4px;
     }
 
-    .content-tabs::-webkit-scrollbar {
-        display: none;
+    .tab-btn {
+        flex: 1 1 0%;
+        min-width: 0;
+        justify-content: center;
+        padding: 7px 4px;
+        font-size: 0.73rem;
+        gap: 4px;
     }
 
-    .tab-btn {
-        flex: 1 0 auto;
-        justify-content: center;
-        padding: 8px 10px;
-        font-size: 0.78rem;
-        min-width: max-content;
+    .tab-btn span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .projects-grid {
@@ -1197,9 +1196,9 @@ body {
 
 .cv-modal-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    padding: 14px 20px;
+    padding: 10px 16px;
     border-bottom: 1px solid var(--card-border);
     background-color: var(--bg-color);
 }
