@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QRIS Location Tracker &amp; EMVCo Parser</title>
+
+    <!-- PWA Meta -->
+    <meta name="theme-color" content="#090d16">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- HTML5 QR Code Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <link rel="stylesheet" href="/style.css?v=2">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Top Application Header -->
+        <header class="top-bar">
+            <div class="brand-group">
+                <div class="brand-badge">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <rect x="7" y="7" width="3" height="3"></rect>
+                        <rect x="14" y="7" width="3" height="3"></rect>
+                        <rect x="7" y="14" width="3" height="3"></rect>
+                        <path d="M14 14h3v3h-3z"></path>
+                    </svg>
+                </div>
+                <div class="brand-title">
+                    <span class="app-name">QRIS Tracker</span>
+                    <span class="app-sub">EMVCo 2.0 Parser &amp; Geolocation Engine</span>
+                </div>
+            </div>
+
+            <div class="status-indicator" id="gps-status">
+                <span class="dot-beacon"></span>
+                <span class="status-text">GPS Standby</span>
+            </div>
+        </header>
+
+        <!-- Main View Router Container -->
+        <main class="main-viewport">
+            
+            <!-- SECTION 1: SCANNER VIEW -->
+            <section id="screen-scanner" class="screen-view active">
+                <div class="card scanner-box">
+                    <div class="card-header">
+                        <div class="header-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                <circle cx="12" cy="13" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2>Pindai Kode QRIS Merchant</h2>
+                            <p>Arahkan kamera ke stiker QRIS untuk parsing otomatis &amp; tag lokasi</p>
+                        </div>
+                    </div>
+
+                    <div id="reader" class="scanner-viewport"></div>
+
+                    <div class="manual-toggle-area">
+                        <button class="btn btn-secondary" id="toggle-manual-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                            <span>Input Raw String QRIS Manual</span>
+                        </button>
+
+                        <div id="manual-form" class="manual-form-panel hidden">
+                            <textarea id="raw-qris-input" placeholder="Paste kode raw QRIS (contoh: 00020101021126580016ID.CO.QRIS.WWW...)" rows="3" class="font-mono"></textarea>
+                            <button class="btn btn-primary" id="btn-parse-manual">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Parse Payload &amp; Simpan Lokasi</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parsed Scan Result Modal / Card -->
+                <div id="scan-result-card" class="card result-card hidden">
+                    <div class="result-top">
+                        <div class="pill-verified">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span>QRIS EMVCo Valid</span>
+                        </div>
+                        <button class="btn-icon-close" id="close-result-btn" title="Tutup">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="result-body">
+                        <div class="merchant-header-group">
+                            <h3 id="res-merchant-name" class="merchant-title">-</h3>
+                            <p class="merchant-location" id="res-merchant-city">-</p>
+                        </div>
+
+                        <div class="metrics-grid">
+                            <div class="metric-cell">
+                                <span class="cell-label">Penyedia / Acquirer</span>
+                                <span class="cell-value text-accent" id="res-acquirer">-</span>
+                            </div>
+                            <div class="metric-cell">
+                                <span class="cell-label">Nominal Transaksi</span>
+                                <span class="cell-value" id="res-amount">-</span>
+                            </div>
+                            <div class="metric-cell">
+                                <span class="cell-label">Kode Pos</span>
+                                <span class="cell-value" id="res-postal">-</span>
+                            </div>
+                            <div class="metric-cell">
+                                <span class="cell-label">Koordinat GPS</span>
+                                <span class="cell-value font-mono text-emerald" id="res-gps">-</span>
+                            </div>
+                        </div>
+
+                        <!-- EMVCo TLV Inspector Accordion -->
+                        <div class="emvco-inspector">
+                            <div class="inspector-title">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                                <span>EMVCo TLV Data Tags</span>
+                            </div>
+                            <div class="tlv-chips-container" id="tlv-chips-box">
+                                <!-- Generated via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: MAP VIEW -->
+            <section id="screen-map" class="screen-view">
+                <div class="card map-card">
+                    <div class="map-card-header">
+                        <div class="header-left">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <h2>Peta Sebaran Lokasi Merchant</h2>
+                        </div>
+                        <span class="pill-count" id="map-marker-count">0 Lokasi</span>
+                    </div>
+                    <div id="map" class="map-frame"></div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: HISTORY VIEW -->
+            <section id="screen-history" class="screen-view">
+                <div class="card history-card">
+                    <div class="history-card-header">
+                        <div class="header-left">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 8v4l3 3"></path>
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            <h2>Riwayat Pemindaian</h2>
+                        </div>
+                        <button class="btn-danger-link" id="clear-history-btn">Bersihkan</button>
+                    </div>
+                    <div id="history-list" class="history-stack">
+                        <!-- Items rendered via JS -->
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-bar">
+            <button class="nav-tab active" data-target="screen-scanner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <span>Scanner</span>
+            </button>
+
+            <button class="nav-tab" data-target="screen-map">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="1 6 1 22 8 18 15 22 22 18 22 2 15 6 8 2 1 6"></polygon>
+                    <line x1="8" y1="2" x2="8" y2="18"></line>
+                    <line x1="15" y1="6" x2="15" y2="22"></line>
+                </svg>
+                <span>Peta</span>
+            </button>
+
+            <button class="nav-tab" data-target="screen-history">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>Riwayat</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/app.js?v=2"></script>
+</body>
+</html>
