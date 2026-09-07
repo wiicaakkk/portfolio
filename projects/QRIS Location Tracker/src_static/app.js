@@ -94,7 +94,7 @@ function initGPS() {
             (err) => {
                 console.warn('GPS Warning:', err.message);
                 if (status) {
-                    status.innerHTML = `<span style="color:#ef4444;">⚠️ GPS Standby</span>`;
+                    status.innerHTML = `<span style="color:#ef4444;">GPS Standby</span>`;
                 }
             },
             { enableHighAccuracy: true }
@@ -266,7 +266,7 @@ async function loadHistory() {
             card.innerHTML = `
                 <div>
                     <h4>${item.merchantName || 'Unknown Merchant'}</h4>
-                    <p>📍 ${item.merchantCity || '-'} • ${item.amount || 'Rp 0'}</p>
+                    <p>${item.merchantCity || '-'} • ${item.amount || 'Rp 0'}</p>
                 </div>
                 <div class="history-right">
                     <span class="acquirer-badge">${item.acquirer || 'QRIS'}</span>
