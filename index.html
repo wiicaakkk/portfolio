@@ -59,7 +59,7 @@
                 </button>
                 
                 <!-- GitHub Badge -->
-                <a href="https://github.com/wiicaakkk" target="_blank" class="icon-control-btn" title="GitHub Profile (wiicaakkk)">
+                <a href="https://github.com/wiicaakkk" class="icon-control-btn" title="GitHub Profile (wiicaakkk)">
                     <i class="fa-brands fa-github"></i>
                 </a>
                 
@@ -81,8 +81,8 @@
             <!-- LEFT COLUMN: Profile & Bio Sidebar -->
             <aside class="profile-sidebar">
                 <!-- Avatar -->
-                <div class="avatar-container">
-                    <img src="assets/avatar.png?v=2" alt="Bagus Wicaksono Nurjayanto" class="avatar-img" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=wiicaakkk'">
+                <div class="avatar-container" style="cursor: pointer;" title="Click 2x for Easter Egg! 🐱">
+                    <img src="assets/avatar.png?v=2" alt="Bagus Wicaksono Nurjayanto" class="avatar-img" id="userAvatar" onclick="handleAvatarEasterEgg(event)" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=wiicaakkk'">
                 </div>
 
                 <!-- User Info -->
@@ -317,7 +317,7 @@
                             <div class="experience-card">
                                 <div class="exp-header">
                                     <div>
-                                        <h4 class="exp-role">Programmer – Core Banking Developer &amp; Business Analyst</h4>
+                                        <h4 class="exp-role">Programmer – Core Banking Developer</h4>
                                         <div class="exp-company">Next TI, Jakarta</div>
                                     </div>
                                     <span class="exp-date">Apr 2024 – Present</span>
@@ -417,7 +417,7 @@
                         
                         <div class="contact-grid">
                             <!-- LinkedIn -->
-                            <a href="https://www.linkedin.com/in/bagus-wicaksono-nurjayanto/" target="_blank" class="contact-card">
+                            <a href="https://www.linkedin.com/in/bagus-wicaksono-nurjayanto/" class="contact-card">
                                 <div class="contact-icon">
                                     <i class="fa-brands fa-linkedin-in"></i>
                                 </div>
@@ -428,7 +428,7 @@
                             </a>
 
                             <!-- WhatsApp / Phone -->
-                            <a href="https://wa.me/6282223259114" target="_blank" class="contact-card">
+                            <a href="https://wa.me/6282223259114" class="contact-card">
                                 <div class="contact-icon">
                                     <i class="fa-brands fa-whatsapp"></i>
                                 </div>
@@ -450,7 +450,7 @@
                             </a>
 
                             <!-- GitHub -->
-                            <a href="https://github.com/wiicaakkk" target="_blank" class="contact-card">
+                            <a href="https://github.com/wiicaakkk" class="contact-card">
                                 <div class="contact-icon">
                                     <i class="fa-brands fa-github"></i>
                                 </div>
@@ -506,7 +506,7 @@
                         <i class="fa-solid fa-download"></i>
                         <span>Download</span>
                     </a>
-                    <a href="assets/Bagus_Wicaksono_Nurjayanto_CV.pdf" target="_blank" class="btn-cv-action" title="Open in New Tab">
+                    <a href="assets/Bagus_Wicaksono_Nurjayanto_CV.pdf" class="btn-cv-action" title="Open in New Tab">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                     <button class="cv-modal-close" onclick="closeCvModal()" title="Close (Esc)">
@@ -516,7 +516,7 @@
             </div>
 
             <div class="cv-modal-body">
-                <iframe src="assets/Bagus_Wicaksono_Nurjayanto_CV.pdf#toolbar=1&navpanes=0" class="cv-iframe" id="cvIframe" title="Curriculum Vitae Preview"></iframe>
+                <iframe src="assets/Bagus_Wicaksono_Nurjayanto_CV.pdf#toolbar=1&navpanes=0" loading="lazy" class="cv-iframe" id="cvIframe" title="Curriculum Vitae Preview"></iframe>
             </div>
         </div>
     </div>
@@ -525,6 +525,6 @@
     <div class="toast-popup" id="toastPopup">URL copied to clipboard!</div>
 
     <!-- Custom Script -->
-    <script src="script.js?v=17"></script>
+    <script src="script.js?v=28"></script>
 </body>
 </html>
